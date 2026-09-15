@@ -16,3 +16,12 @@ rev = "v4.34.0-rc2"
 
 [[lean_lib]]
 name = "Amenability"
+
+[[lean_lib]]
+name = "Solution"
+
+[[lean_lib]]
+name = "Challenge"
+
+[[lean_lib]]
+name = "Palomar"

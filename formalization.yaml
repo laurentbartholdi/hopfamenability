@@ -1,0 +1,316 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: v0.4
+project:
+  name: Amenability of Lie, group and Hopf algebras
+  description: 'Formalization of manuscript Theorems A–J: coalgebraic rounding and the equivalence
+    of algebraic and coalgebraic amenability; quotient, subalgebra and cleft-extension results
+    for Hopf algebras; amenability of permutation-module quotients and all nonzero modules of
+    amenable groups; Lie-algebra growth and permanence; the inclusions EL ⊆ SL ⊆ AL and strictness
+    of EL ⊆ SL; an amenable finitely generated Lie algebra of exponential growth; and amenability
+    of the augmentation-associated graded module coalgebra. All 21 compared declarations use
+    only standard Lean axioms. Theorem D and the equivalence form of E explicitly assume projectivity
+    over the displayed Hopf subalgebra. The arbitrary-characteristic separation in H explicitly
+    assumes the positive-characteristic PSZ construction; the characteristic-zero separation
+    and the two hierarchy inclusions are unconditional. These conditional claims do not certify
+    the literature inputs themselves.'
+  authors:
+  - Laurent Bartholdi
+  responsible_maintainers:
+  - Laurent Bartholdi
+  license: Apache-2.0
+sources:
+- title: Amenability of Lie, Group and Hopf algebras
+  authors:
+  - Laurent Bartholdi
+  id: https://arxiv.org/abs/2609.10373v1
+  type: paper
+  location: Theorems A–J; Theorem 2.2 (projectivity input); Section 5 and Theorem 5.4 (PSZ input)
+  relationship: formalizes
+  author_endorsement: participated
+  note: The Takeuchi–Masuoka–Wigner and PSZ inputs remain explicit hypotheses in the corresponding
+    compared statements; their dependencies and source locations are described in docs/PALOMAR.md.
+classification:
+  arxiv:
+  - math.RA
+  - math.GR
+  msc2020:
+  - 16T05
+  - 43A07
+status:
+  scope: All manuscript main theorems A–J, represented by the 21 declarations in comparator.json.
+    D, E_iff and the arbitrary-characteristic H are conditional as stated. Internal support
+    lemmas and aliases are not separate registry claims.
+  sorry_count: 1
+  sorry_in_definitions: 0
+  axioms:
+  - propext
+  - Classical.choice
+  - Quot.sound
+  - HopfAmenability.takeuchiWigner_projective_left
+  - sorryAx
+  main_results:
+  - declaration: HopfAmenability.palomar_rounding
+    file: Solution.lean
+    sorry_count: 0
+    axioms: &id001
+    - propext
+    - Classical.choice
+    - Quot.sound
+    comparator_config: comparator.json
+  - declaration: HopfAmenability.palomar_amenability
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremB
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremC
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremC_module
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremD
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+    literature_dependencies:
+    - statement: Projectivity of the ambient cocommutative Hopf algebra over the displayed Hopf
+        subalgebra, retained as the explicit hprojective hypothesis.
+      source: Amenability of Lie, Group and Hopf algebras, proof of Theorem 2.2, citing Takeuchi
+        Theorem 3.1 and Masuoka–Wigner Theorem 2.1.
+  - declaration: Palomar.theoremE_extension
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremE_iff
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+    literature_dependencies:
+    - statement: Projectivity of the ambient cocommutative Hopf algebra over the displayed Hopf
+        subalgebra, retained as the explicit hprojective hypothesis.
+      source: Amenability of Lie, Group and Hopf algebras, proof of Theorem 2.2, citing Takeuchi
+        Theorem 3.1 and Masuoka–Wigner Theorem 2.1.
+  - declaration: Palomar.theoremF_permutation
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremF
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremG_growth
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremG_subalgebra
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremG_quotient
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremG_extension
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremG_union
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremH_EL_SL
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremH_SL_AL
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremH_charZero
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremH
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+    literature_dependencies:
+    - statement: In prime positive characteristic, a finitely generated subexponential-growth
+        Lie algebra outside EL, retained as the explicit hPSZ hypothesis.
+      source: Amenability of Lie, Group and Hopf algebras, Section 5, Theorem 5.4 and its cited
+        PSZ/self-similar construction.
+  - declaration: Palomar.theoremI
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+  - declaration: Palomar.theoremJ
+    file: Solution.lean
+    sorry_count: 0
+    axioms: *id001
+    comparator_config: comparator.json
+automation:
+  methods:
+  - method: agent
+    models:
+    - ChatGPT 5.6 Sol
+    framework: ChatGPT and Codex
+    tool_setup: Lean 4 and Mathlib, with iterative compilation and axiom audits.
+    prompting_notes: Project handoff and source headers credit AI-assisted proof development
+      under Laurent Bartholdi's direction.
+  - method: agent
+    models:
+    - GPT-6
+    framework: Codex
+    tool_setup: Palomar statement packaging, metadata preparation, and local Lean checks.
+  notes: Source headers credit ChatGPT 5.6 Sol. A complete historical inventory of model runs,
+    costs, and prompts is not reconstructed here. AI systems are credited as tools; human authorship
+    and maintenance remain with Laurent Bartholdi.
+fidelity:
+  divergences: The Challenge covers all A–J. D and the reverse implication of E require the
+    explicit structural projectivity hypothesis; the general-field H requires an explicit positive-characteristic
+    PSZ witness with subexponential growth outside EL. G's subalgebra and extension proofs use
+    relative PBW and are unconditional. Lie amenability is stated as algebraic amenability of
+    U(L), using the proved equivalence with the manuscript definition. J specifies the canonical
+    graded action, counit and coproduct on homogeneous representatives and asserts Følner subcoalgebras,
+    rather than hiding the graded construction behind project imports. C has its existing same-universe
+    equivalence and a separate arbitrary-universe forward implication. Rational tolerances and
+    zero-based Lie balls match the existing development. The wider source still contains one
+    projectivity axiom and the designated PSZ sorry, but none of the compared proofs depends
+    on either.
+review:
+  status: self-assessed
+  notes: Local compilation, comparison of the independently elaborated statement types and definitions,
+    and axiom audits are recorded by scripts/check_palomar.sh. No independent human peer review
+    or completed Palomar Comparator/NanoDa verification is claimed. The local comparison is
+    a development check, not a replacement for registry verification.
+alignment:
+  statements:
+  - source: Theorem A (sharp rounding)
+    lean: HopfAmenability.palomar_rounding
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem A
+    lean: HopfAmenability.palomar_amenability
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem B
+    lean: Palomar.theoremB
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem C
+    lean: Palomar.theoremC
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem C
+    lean: Palomar.theoremC_module
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem D
+    lean: Palomar.theoremD
+    module: Solution
+    status: proved
+    note: Conditional on the explicitly stated literature input.
+  - source: Theorem E
+    lean: Palomar.theoremE_extension
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem E
+    lean: Palomar.theoremE_iff
+    module: Solution
+    status: proved
+    note: Conditional on the explicitly stated literature input.
+  - source: Theorem F
+    lean: Palomar.theoremF_permutation
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem F
+    lean: Palomar.theoremF
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem G
+    lean: Palomar.theoremG_growth
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem G
+    lean: Palomar.theoremG_subalgebra
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem G
+    lean: Palomar.theoremG_quotient
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem G
+    lean: Palomar.theoremG_extension
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem G
+    lean: Palomar.theoremG_union
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem H
+    lean: Palomar.theoremH_EL_SL
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem H
+    lean: Palomar.theoremH_SL_AL
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem H
+    lean: Palomar.theoremH_charZero
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem H
+    lean: Palomar.theoremH
+    module: Solution
+    status: proved
+    note: Conditional on the explicitly stated literature input.
+  - source: Theorem I
+    lean: Palomar.theoremI
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.
+  - source: Theorem J
+    lean: Palomar.theoremJ
+    module: Solution
+    status: proved
+    note: No project-local axioms or incomplete proofs.

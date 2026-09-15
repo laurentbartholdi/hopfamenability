@@ -1,0 +1,34 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "HopfAmenability.palomar_rounding",
+    "HopfAmenability.palomar_amenability",
+    "Palomar.theoremB",
+    "Palomar.theoremC",
+    "Palomar.theoremC_module",
+    "Palomar.theoremD",
+    "Palomar.theoremE_extension",
+    "Palomar.theoremE_iff",
+    "Palomar.theoremF_permutation",
+    "Palomar.theoremF",
+    "Palomar.theoremG_growth",
+    "Palomar.theoremG_subalgebra",
+    "Palomar.theoremG_quotient",
+    "Palomar.theoremG_extension",
+    "Palomar.theoremG_union",
+    "Palomar.theoremH_EL_SL",
+    "Palomar.theoremH_SL_AL",
+    "Palomar.theoremH_charZero",
+    "Palomar.theoremH",
+    "Palomar.theoremI",
+    "Palomar.theoremJ"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

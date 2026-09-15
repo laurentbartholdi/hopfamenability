@@ -177,3 +177,14 @@ import Amenability.GroupAmenability
 ```bash
 lake build
 ```
+
+## Palomar submission
+
+The Palomar package covers **all manuscript main theorems A–J**, with 21
+compared declarations. [Challenge.lean](Challenge.lean) gives the independent
+statements; [Solution.lean](Solution.lean) supplies the proofs. D and the
+reverse implication of E retain an explicit projectivity hypothesis; the
+general-field H retains the positive-characteristic PSZ hypothesis. G uses
+relative PBW and is unconditional. All compared proofs use only standard Lean
+axioms. See [the submission guide](docs/PALOMAR.md) and
+[metadata](formalization.yaml) for the complete map and verification steps.

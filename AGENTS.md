@@ -27,7 +27,10 @@ them: many delicate API/coercion issues have already been resolved.
   Authors: Laurent Bartholdi, based on code by ChatGPT 5.6 Sol
   -/
   ```
-- Do not use `sorry`, except for the single designated theorem
+- `Challenge.lean` may use deliberate `sorry` placeholders for the theorem
+  declarations listed in `comparator.json`. These are independent statement
+  placeholders, not incomplete proofs; `Solution.lean` must not import them.
+- In proof-development sources, do not use `sorry`, except for the single designated theorem
   `exists_psz_subexponential_not_elementary` implementing the external
   positive-characteristic PSZ construction.
 - Compile modified files. Fix all errors before moving to dependent files.
@@ -61,6 +64,6 @@ PBW code precedes amenability definitions; Theorems A--J then follow in
 manuscript dependency order. Run `scripts/check_architecture.sh` after moves.
 
 The only project-local assumptions are `takeuchiWigner_projective_left` and
-the designated positive-characteristic PSZ proof. No other axiom, `sorry`,
+the designated positive-characteristic PSZ proof. Apart from the designated Challenge placeholders, no other axiom, `sorry`,
 `admit`, or conclusion-bearing proof package is permitted. Keep
 `docs/LEAN_ROUNDING_PROOF.md` current when interfaces change materially.

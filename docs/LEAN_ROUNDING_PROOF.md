@@ -1157,3 +1157,15 @@ degree-one coproduct estimate, tensor-filtration multiplication, and the
 full augmentation-filtration coproduct estimate are proved there.  Continue
 The actual graded operations are constructed directly; no abstract proof
 package is part of the current argument.
+
+## Palomar packaging
+
+The `palomar` branch adds independent `Challenge.lean` statements and
+`Solution.lean` proofs for all A–J, selected in `comparator.json`. The Challenge
+imports Mathlib only and its listed theorem placeholders are intentionally
+allowed by `AGENTS.md`. D and E iff expose projectivity as a hypothesis; general
+H exposes the positive-characteristic PSZ input. `Palomar/Proofs.lean` provides
+hypothesis-based Hopf descent and uses the existing relative-PBW descent proof
+for unconditional G. Existing public manuscript endpoints are unchanged.
+J specifies its graded action and coalgebra on homogeneous representatives.
+See `docs/PALOMAR.md` and run `scripts/check_palomar.sh` after packaging changes.
