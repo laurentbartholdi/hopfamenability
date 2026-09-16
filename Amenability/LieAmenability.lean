@@ -115,8 +115,13 @@ def lieActionMap (F : Submodule k L) (E : Submodule k M) :
   TensorProduct.lift
     ((lieActionBilinear (k := k) (L := L) (M := M)).domRestrict₁₂ F E)
 
+/-- Stable surjectivity instance for the identity scalar map. -/
+theorem lieActionScalarSurjective : RingHomSurjective (RingHom.id k) :=
+  RingHomSurjective.ids
+
 def lieActionSubspace (F : Submodule k L) (E : Submodule k M) :
     Submodule k M :=
+  letI : RingHomSurjective (RingHom.id k) := lieActionScalarSurjective
   LinearMap.range (lieActionMap F E)
 
 theorem lieActionSubspace_eq_map₂ (F : Submodule k L) (E : Submodule k M) :

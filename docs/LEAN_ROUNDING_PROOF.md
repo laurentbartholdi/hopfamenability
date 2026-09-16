@@ -1169,3 +1169,9 @@ hypothesis-based Hopf descent and uses the existing relative-PBW descent proof
 for unconditional G. Existing public manuscript endpoints are unchanged.
 J specifies its graded action and coalgebra on homogeneous representatives.
 See `docs/PALOMAR.md` and run `scripts/check_palomar.sh` after packaging changes.
+
+The Palomar declaration check uses structural equality, matching Comparator,
+rather than kernel definitional equality. Shared statement definitions use named
+scalar-tower and scalar-map proofs to avoid context-dependent `_proof_` names;
+the elementary directed-union constructor specifies `CompleteLattice.toSupSet`
+explicitly. These changes preserve the mathematical interfaces and proofs.

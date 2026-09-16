@@ -325,11 +325,18 @@ namespace Palomar
 open HopfAmenability Coalgebra Module TensorProduct
 noncomputable section
 universe u v w
+/-- Stable composition instance for the symbol map. -/
+theorem symbolCompTriple {k : Type u} [Field k] :
+    RingHomCompTriple (RingHom.id k) (RingHom.id k) (RingHom.id k) :=
+  RingHomCompTriple.ids
+
 /-- The degree-n symbol W_n → direct sum of W_i/W_(i + 1), for a descending
 filtration W. All quotients and the direct sum use their canonical k-modules. -/
 def symbol {k : Type u} {V : Type v} [Field k] [AddCommGroup V] [Module k V]
     (W : ℕ → Submodule k V) (n : ℕ) :
     W n →ₗ[k] DirectSum ℕ (fun i => W i ⧸ (W (i + 1)).comap (W i).subtype) :=
+  letI : RingHomCompTriple (RingHom.id k) (RingHom.id k) (RingHom.id k) :=
+    symbolCompTriple
   (DirectSum.lof k ℕ _ n).comp ((W (n + 1)).comap (W n).subtype).mkQ
 end
 end Palomar

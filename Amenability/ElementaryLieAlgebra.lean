@@ -166,7 +166,7 @@ inductive IsElementaryLieObject : LieAlgebraObject k → Prop
   | directedUnion (A : LieAlgebraObject k) (ι : Type v) [Nonempty ι]
       (S : ι → LieSubalgebra k A.Carrier)
       (hdir : Directed (· ≤ ·) S)
-      (hsup : iSup S = ⊤)
+      (hsup : @iSup _ _ CompleteLattice.toSupSet S = ⊤)
       (hS : ∀ i, IsElementaryLieObject (A.ofSubalgebra (S i))) :
       IsElementaryLieObject A
 

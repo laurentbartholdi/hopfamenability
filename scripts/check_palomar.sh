@@ -22,7 +22,11 @@ solution = (root / 'Solution.lean').read_text()
 assert len(challenge.encode()) <= 100 * 1024 and len(challenge.splitlines()) <= 1000
 assert all((line == 'import Mathlib' or line.startswith('import Mathlib.')) for line in challenge.splitlines() if line.startswith('import '))
 assert 'import Challenge' not in solution
-assert set(re.findall(r'^theorem (\w+)', challenge, re.M)) == {n.rsplit('.', 1)[1] for n in config['theorem_names']}
+declarations = re.findall(r'^theorem (\w+)\b(.*?)(?=^theorem |\Z)', challenge, re.M | re.S)
+assert {name for name, body in declarations if 'by sorry' in body} == {
+    n.rsplit('.', 1)[1] for n in config['theorem_names']}
+assert len(re.findall(r'\bsorry\b', '\n'.join(
+    line for line in challenge.splitlines() if line.strip() == 'by sorry'))) == len(config['theorem_names'])
 assert len(config['theorem_names']) == len(set(config['theorem_names']))
 for name in config['theorem_names']:
     short = name.rsplit('.', 1)[1]

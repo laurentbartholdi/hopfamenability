@@ -79,10 +79,14 @@ bash scripts/check_palomar.sh
 ```
 
 The submission script compiles the two independent modules, checks their source
-signatures, compares their elaborated types and reachable statement definitions
-using Lean's kernel, and checks each solution axiom list against the standard
-three axioms. `Palomar/CheckStatements.lean` is a development check; it does not
+signatures, compares their elaborated statements and reachable declarations
+structurally (including definition bodies and auxiliary proofs), and checks each
+solution axiom list against the standard three axioms. `Palomar/CheckStatements.lean` is a development check; it does not
 replace Comparator's sandboxed export/replay or NanoDa's independent kernel.
+The comparison deliberately does not unfold definitions or inline generated
+proofs: these can conceal differences that Comparator rejects. Stable named
+instance proofs and an explicit supremum instance keep the independently
+elaborated declarations identical.
 The only expected statement warnings are the intentional Challenge holes.
 Building the wider project may also replay its designated PSZ warning.
 
@@ -97,6 +101,14 @@ Full Comparator verification requires Linux/Landrun, a compatible lean4export,
 and NanoDa. `comparator.json` enables NanoDa and allows only `propext`,
 `Quot.sound`, and `Classical.choice`. Full Comparator/NanoDa verification has
 not been run on the preparation machine (macOS).
+
+On 2026-09-16, the corrected package passed Comparator's actual export,
+structural comparison, axiom validation, and Lean kernel replay locally, using
+Comparator `575674928e239f5bc452aab72d1dd7b0f1326494` and lean4export
+`cacf989bd75f608700820f6afc595f32e7a99a4d` (the failed submission's revisions).
+That development run used upstream's `scripts/fake-landrun.sh` and a temporary
+configuration with NanoDa disabled; the committed configuration retains NanoDa.
+Hosted verification is still required for the full sandboxed check.
 
 Review the statements and metadata, commit and push the final snapshot to
 `laurentbartholdi/hopfamenability`, and obtain the full SHA with

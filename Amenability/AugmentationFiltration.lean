@@ -27,8 +27,12 @@ variable [Field k] [Ring H] [HopfAlgebra k H]
 def augmentationIdeal : Ideal H :=
   RingHom.ker (Bialgebra.counitAlgHom k H).toRingHom
 
+/-- A stable proof term for the scalar tower in the augmentation filtration. -/
+theorem augmentationScalarTower : IsScalarTower k H H := IsScalarTower.right
+
 /-- The descending augmentation filtration. -/
 def augmentationFiltration (n : ℕ) : Submodule k H :=
+  letI : IsScalarTower k H H := augmentationScalarTower
   ((augmentationIdeal (k := k) (H := H) ^ n : Ideal H) :
     Submodule H H).restrictScalars k
 

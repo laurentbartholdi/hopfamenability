@@ -288,7 +288,7 @@ inductive IsElementaryLieObject : LieAlgebraObject k → Prop
   | directedUnion (A : LieAlgebraObject k) (ι : Type v) [Nonempty ι]
       (S : ι → LieSubalgebra k A.Carrier)
       (hdir : Directed (· ≤ ·) S)
-      (hsup : iSup S = ⊤)
+      (hsup : @iSup _ _ CompleteLattice.toSupSet S = ⊤)
       (hS : ∀ i, IsElementaryLieObject (A.ofSubalgebra (S i))) :
       IsElementaryLieObject A
 
@@ -315,8 +315,13 @@ def lieActionMap (F : Submodule k L) (E : Submodule k M) :
   TensorProduct.lift
     ((lieActionBilinear (k := k) (L := L) (M := M)).domRestrict₁₂ F E)
 
+/-- Stable surjectivity instance for the identity scalar map. -/
+theorem lieActionScalarSurjective : RingHomSurjective (RingHom.id k) :=
+  RingHomSurjective.ids
+
 def lieActionSubspace (F : Submodule k L) (E : Submodule k M) :
     Submodule k M :=
+  letI : RingHomSurjective (RingHom.id k) := lieActionScalarSurjective
   LinearMap.range (lieActionMap F E)
 
 def lieExpansion (F : Submodule k L) (E : Submodule k M) :
@@ -626,8 +631,12 @@ variable [Field k] [Ring H] [HopfAlgebra k H]
 def augmentationIdeal : Ideal H :=
   RingHom.ker (Bialgebra.counitAlgHom k H).toRingHom
 
+/-- A stable proof term for the scalar tower in the augmentation filtration. -/
+theorem augmentationScalarTower : IsScalarTower k H H := IsScalarTower.right
+
 /-- The descending augmentation filtration. -/
 def augmentationFiltration (n : ℕ) : Submodule k H :=
+  letI : IsScalarTower k H H := augmentationScalarTower
   ((augmentationIdeal (k := k) (H := H) ^ n : Ideal H) :
     Submodule H H).restrictScalars k
 
@@ -660,11 +669,18 @@ namespace Palomar
 open HopfAmenability Coalgebra Module TensorProduct
 noncomputable section
 universe u v w
+/-- Stable composition instance for the symbol map. -/
+theorem symbolCompTriple {k : Type u} [Field k] :
+    RingHomCompTriple (RingHom.id k) (RingHom.id k) (RingHom.id k) :=
+  RingHomCompTriple.ids
+
 /-- The degree-n symbol W_n → direct sum of W_i/W_(i + 1), for a descending
 filtration W. All quotients and the direct sum use their canonical k-modules. -/
 def symbol {k : Type u} {V : Type v} [Field k] [AddCommGroup V] [Module k V]
     (W : ℕ → Submodule k V) (n : ℕ) :
     W n →ₗ[k] DirectSum ℕ (fun i => W i ⧸ (W (i + 1)).comap (W i).subtype) :=
+  letI : RingHomCompTriple (RingHom.id k) (RingHom.id k) (RingHom.id k) :=
+    symbolCompTriple
   (DirectSum.lof k ℕ _ n).comp ((W (n + 1)).comap (W n).subtype).mkQ
 end
 end Palomar

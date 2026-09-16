@@ -6,23 +6,17 @@ Authors: Laurent Bartholdi, based on code by ChatGPT 5.6 Sol
 
 import Lean
 
-/-! Local kernel comparison of the independent statement and its dependencies.
-This is a development check, not Comparator's sandboxed export/replay protocol. -/
+/-! Strict structural comparison of the independent statements and their dependencies.
+Match Comparator's declaration equality: do not unfold definitions, rename universe
+parameters, or inline generated proofs. Kernel definitional equality is weaker and
+can accept packages rejected by Comparator. This development check does not replace
+Comparator's sandboxed export/replay protocol. -/
 open Lean
 
-private def normalized (info : ConstantInfo) (e : Expr) : Expr :=
-  e.instantiateLevelParams info.levelParams
-    ((List.range info.levelParams.length).map fun i => Level.param (.num `level i))
-
-/-- Elaborator-generated proof names depend on declaration order. Inline their
-proofs before comparing; the kernel still checks the resulting expressions. -/
-private partial def expandAuxProofs (env : Environment) (e : Expr) : Expr :=
-  e.replace fun e => do
-    let .const name levels := e | none
-    unless (name.toString.splitOn "_proof_").length > 1 do none
-    let info ← env.find? name
-    let value ← info.value? (allowOpaque := true)
-    return expandAuxProofs env (value.instantiateLevelParams info.levelParams levels)
+deriving instance BEq for Lean.QuotKind
+deriving instance BEq for Lean.QuotVal
+deriving instance BEq for Lean.InductiveVal
+deriving instance BEq for Lean.ConstantInfo
 
 def main : IO Unit := do
   initSearchPath (← findSysroot)
@@ -43,25 +37,21 @@ def main : IO Unit := do
     unless challenge.getModuleIdxFor? name == challengeIdx do continue
     let some c := challenge.find? name | throw (IO.userError s!"Missing Challenge declaration: {name}")
     let some s := solution.find? name | throw (IO.userError s!"Missing Solution declaration: {name}")
-    unless c.levelParams.length == s.levelParams.length do
-      throw (IO.userError s!"Universe parameter mismatch: {name}")
-    unless Lean.Kernel.isDefEqGuarded solution {} (normalized c (expandAuxProofs challenge c.type))
-        (normalized s (expandAuxProofs solution s.type)) do
-      throw (IO.userError s!"Independent type mismatch: {name}")
-    pending := pending ++ (expandAuxProofs challenge c.type).getUsedConstants
-    match c with
-    | .defnInfo _ =>
-      let some cv := c.value? | throw (IO.userError s!"Missing Challenge value: {name}")
-      let some sv := s.value? | throw (IO.userError s!"Missing Solution value: {name}")
-      unless Lean.Kernel.isDefEqGuarded solution {} (normalized c (expandAuxProofs challenge cv))
-          (normalized s (expandAuxProofs solution sv)) do
-        throw (IO.userError s!"Independent definition mismatch: {name}")
-      pending := pending ++ (expandAuxProofs challenge cv).getUsedConstants
-    | .inductInfo ci =>
-      let .inductInfo si := s | throw (IO.userError s!"Inductive kind mismatch: {name}")
-      unless ci.ctors == si.ctors do throw (IO.userError s!"Constructor mismatch: {name}")
-      pending := pending ++ ci.ctors.toArray
-    | .axiomInfo _ => throw (IO.userError s!"Unexpected statement axiom: {name}")
-    | _ => pure ()
+    if roots.contains name.toString then
+      unless c.toConstantVal == s.toConstantVal do
+        throw (IO.userError s!"Independent theorem statement mismatch: {name}")
+    else
+      unless c == s do
+        throw (IO.userError s!"Independent declaration mismatch: {name}")
+      if let some value := c.value? (allowOpaque := true) then
+        pending := pending ++ value.getUsedConstants
+      match c with
+      | .inductInfo ci => pending := pending ++ ci.ctors.toArray ++ ci.all.toArray
+      | .ctorInfo ci => pending := pending.push ci.induct
+      | .recInfo ri =>
+        for rule in ri.rules do
+          pending := pending.push rule.ctor ++ rule.rhs.getUsedConstants
+      | _ => pure ()
+    pending := pending ++ c.type.getUsedConstants
     count := count + 1
-  IO.println s!"Independent kernel comparison passed for {roots.size} claims and {count} statement declarations."
+  IO.println s!"Strict declaration comparison passed for {roots.size} claims and {count} statement declarations."
