@@ -10,6 +10,10 @@ import Amenability.TheoremI
 import Amenability.TheoremJ
 import Palomar.Proofs
 
+-- Palomar compiles Challenge directly, without lakefile.toml options. Keep
+-- pending instance synthesis identical in both independently compiled files.
+set_option maxSynthPendingDepth 3
+
 open Coalgebra Module
 
 namespace HopfAmenability

@@ -78,7 +78,9 @@ bash scripts/check_architecture.sh
 bash scripts/check_palomar.sh
 ```
 
-The submission script compiles the two independent modules, checks their source
+The submission script builds Solution with Lake, then compiles Challenge directly
+without Lake compiler options and loads it under a separate module alias, matching
+Palomar's canonical Challenge build. It checks their source
 signatures, compares their elaborated statements and reachable declarations
 structurally (including definition bodies and auxiliary proofs), and checks each
 solution axiom list against the standard three axioms. `Palomar/CheckStatements.lean` is a development check; it does not
@@ -86,7 +88,10 @@ replace Comparator's sandboxed export/replay or NanoDa's independent kernel.
 The comparison deliberately does not unfold definitions or inline generated
 proofs: these can conceal differences that Comparator rejects. Stable named
 instance proofs and an explicit supremum instance keep the independently
-elaborated declarations identical.
+elaborated declarations identical. Both source files explicitly set
+`maxSynthPendingDepth 3`: relying on `lakefile.toml` alone makes Theorem J
+elaborate differently in the direct Challenge build. The canonical build check
+reproduced the hosted J rejection before this source-level setting was added.
 The only expected statement warnings are the intentional Challenge holes.
 Building the wider project may also replay its designated PSZ warning.
 
@@ -108,7 +113,9 @@ Comparator `575674928e239f5bc452aab72d1dd7b0f1326494` and lean4export
 `cacf989bd75f608700820f6afc595f32e7a99a4d` (the failed submission's revisions).
 That development run used upstream's `scripts/fake-landrun.sh` and a temporary
 configuration with NanoDa disabled; the committed configuration retains NanoDa.
-Hosted verification is still required for the full sandboxed check.
+The same comparison and kernel replay must also pass with the directly compiled
+canonical Challenge, not only the Lake-built module. Hosted verification remains
+required for the full sandboxed check.
 
 Review the statements and metadata, commit and push the final snapshot to
 `laurentbartholdi/hopfamenability`, and obtain the full SHA with

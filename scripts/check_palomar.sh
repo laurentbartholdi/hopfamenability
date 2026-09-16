@@ -2,14 +2,18 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-lake build Challenge Solution
-lake env lean -DwarningAsError=true Solution.lean
-# Deliberate statement placeholders are expected only in Challenge.
-lake env lean Challenge.lean
-lake env lean -DwarningAsError=true --run Palomar/CheckStatements.lean
-
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
+
+lake build Challenge Solution
+lake env lean -DwarningAsError=true Solution.lean
+# Match Palomar's direct compilation: no Lake -D options, and publish the
+# result under a different module name. Deliberate placeholders are expected.
+mkdir -p "$work/PalomarCanonicalCheck"
+lake env lean -o "$work/PalomarCanonicalCheck/Challenge.olean" Challenge.lean
+LEAN_PATH="$work${LEAN_PATH:+:$LEAN_PATH}" lake env lean -DwarningAsError=true \
+  --run Palomar/CheckStatements.lean PalomarCanonicalCheck.Challenge
+
 python3 - "$work" <<'PY'
 import json, pathlib, re, sys
 root = pathlib.Path('.')

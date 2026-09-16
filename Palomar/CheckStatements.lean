@@ -18,14 +18,15 @@ deriving instance BEq for Lean.QuotVal
 deriving instance BEq for Lean.InductiveVal
 deriving instance BEq for Lean.ConstantInfo
 
-def main : IO Unit := do
+def main (args : List String) : IO Unit := do
   initSearchPath (← findSysroot)
   let config ← IO.FS.readFile "comparator.json"
   let json ← IO.ofExcept (Json.parse config)
   let roots ← IO.ofExcept (json.getObjValAs? (Array String) "theorem_names")
-  let challenge ← importModules #[{ module := `Challenge }] {} 0
+  let challengeModule := args.headD "Challenge" |>.toName
+  let challenge ← importModules #[{ module := challengeModule }] {} 0
   let solution ← importModules #[{ module := `Solution }] {} 0
-  let challengeIdx := challenge.getModuleIdx? `Challenge
+  let challengeIdx := challenge.getModuleIdx? challengeModule
   let mut pending := roots.map String.toName
   let mut visited : NameSet := {}
   let mut count := 0

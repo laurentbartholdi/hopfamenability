@@ -1175,3 +1175,9 @@ rather than kernel definitional equality. Shared statement definitions use named
 scalar-tower and scalar-map proofs to avoid context-dependent `_proof_` names;
 the elementary directed-union constructor specifies `CompleteLattice.toSupSet`
 explicitly. These changes preserve the mathematical interfaces and proofs.
+
+Palomar compiles Challenge directly, bypassing the repository's Lake options.
+Both Challenge and Solution therefore set `maxSynthPendingDepth 3` explicitly;
+without it, the canonical J statement selects different implicit instances.
+`scripts/check_palomar.sh` now writes a directly compiled Challenge to a temporary
+module alias and compares that artifact against the Lake-built Solution.

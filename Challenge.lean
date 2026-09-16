@@ -10,6 +10,10 @@ import Mathlib.LinearAlgebra.TensorProduct.Submodule
 import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.LinearAlgebra.FiniteDimensional.Defs
 
+-- Palomar compiles Challenge directly, without lakefile.toml options. Keep
+-- pending instance synthesis identical in both independently compiled files.
+set_option maxSynthPendingDepth 3
+
 /-!
 # Amenability of Lie, group and Hopf algebras: Theorems A–J
 
